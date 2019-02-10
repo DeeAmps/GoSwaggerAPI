@@ -1,0 +1,11 @@
+{
+  "db" : {
+    "connectionString" : "hr/hr@localhost:1521/xe",
+    "queries" : {
+      "GETALLREGIONS" : "SELECT * FROM REGIONS",
+      "GETSINGLEREGION" : "SELECT * FROM REGION WHERE REGION_ID = "
+    }
+  },
+  "host" :"0.0.0.0",
+  "port": 8000
+}
