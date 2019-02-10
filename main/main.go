@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/micro/go-config"
 	"github.com/gorilla/mux"
-	dbDriver "oraclehr.api.com/db"
 	"oraclehr.api.com/controllers"
 	"net/http"
 	"fmt"
@@ -21,7 +20,7 @@ var conn Connection
 func main(){
 	config.LoadFile("../config/config.json")
 	dbStr := getDBConnStr()
-	db := dbDriver.DBConnection(dbStr)
+
 	host := config.Get("host").String("localhost")
 	port := config.Get("port").Int(3000)
 
@@ -30,8 +29,31 @@ func main(){
 	router := mux.NewRouter()
 
 	regionController := controllers.RegionController{}
-	router.HandleFunc("/api/getAllRegions", regionController.GetAllRegions(db, dbqueries["GETALLREGIONS"])).Methods("GET")
-	//router.HandleFunc("/api/SingleRegion/{id}", regionController.GetAllRegions(db, dbqueries["GETSINGLEREGION"])).Methods("GET")
+	countryController := controllers.CountryController{}
+	departmentController := controllers.DepartmentController{}
+	employeeController := controllers.EmployeeController{}
+	jobController := controllers.JobController{}
+	locationController := controllers.LocationController{}
+	
+
+	router.HandleFunc("/api/regions/getAllRegions", regionController.GetAllRegions(dbStr, dbqueries["GETALLREGIONS"])).Methods("GET")
+	router.HandleFunc("/api/regions/getSingleRegion/{id}", regionController.GetSingleRegion(dbStr, dbqueries["GETSINGLEREGION"])).Methods("GET")
+
+	router.HandleFunc("/api/countries/getAllCountries", countryController.GetAllCountries(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/countries/getSingleCountry/{id}", countryController.GetSingleCountry(dbStr, dbqueries[""])).Methods("GET")
+
+	router.HandleFunc("/api/departments/getAllDepartments", departmentController.GetAllDepartments(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/departments/getSingleDepartment/{id}", departmentController.GetSingleDepartment(dbStr, dbqueries[""])).Methods("GET")
+
+	router.HandleFunc("/api/employees/getAllEmployees", employeeController.GetAllEmployees(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/employees/getSingleEmployee/{id}", employeeController.GetSingleEmployee(dbStr, dbqueries[""])).Methods("GET")
+
+	router.HandleFunc("/api/jobs/getAllJobs", jobController.GetAllJobs(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/jobs/getSingleJob/{id}", jobController.GetSingleJob(dbStr, dbqueries[""])).Methods("GET")
+
+	router.HandleFunc("/api/locations/getAllLocations", locationController.GetAllLocations(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/locations/getSingleLocation/{id}", locationController.GetSingleLocation(dbStr, dbqueries[""])).Methods("GET")
+
 	log.Fatal(http.ListenAndServe(url, router))
 
 }

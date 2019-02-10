@@ -3,7 +3,7 @@
     "connectionString" : "hr/hr@localhost:1521/xe",
     "queries" : {
       "GETALLREGIONS" : "SELECT * FROM REGIONS",
-      "GETSINGLEREGION" : "SELECT * FROM REGION WHERE REGION_ID = "
+      "GETSINGLEREGION" : "SELECT * FROM REGIONS WHERE REGION_ID= $1"
     }
   },
   "host" :"0.0.0.0",

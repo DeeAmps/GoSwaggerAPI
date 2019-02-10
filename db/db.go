@@ -17,10 +17,15 @@ func DBConnection(connectionString string) *sql.DB {
 }
 
 
-func ExecuteQuery(db *sql.DB, query string) *sql.Rows{
+func ExecuteRowsQuery(db *sql.DB, query string) *sql.Rows {
 	rows , err := db.Query(query)
 	if err != nil {
 		panic(err)
 	}
 	return rows
+}
+
+func ExecuteRowQuery(db *sql.DB, query string, params int64) *sql.Row {
+	row := db.QueryRow(query, params)
+	return row
 }
