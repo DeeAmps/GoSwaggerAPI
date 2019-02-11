@@ -234,6 +234,32 @@
                 }
             }
         },
+      "/locations/getSingleLocation/{locationId}" : {
+        "get" : {
+          "tags": [
+            "Locations"
+          ],
+          "description" : "Get a Single Location from Oracle HR Database",
+          "summary" : "Get Single Location",
+          "parameters" : [
+            {
+              "name" : "locationId",
+              "in": "path",
+              "required": true,
+              "type": "int",
+              "description" : "Location Id"
+            }
+          ],
+          "responses" : {
+            "400" : {
+              "description" : "Bad Request. No Location with Id found"
+            },
+            "200" : {
+              "description" : "Success"
+            }
+          }
+        }
+      },
         "/regions/getAllRegions" : {
             "get" : {
                 "tags": [

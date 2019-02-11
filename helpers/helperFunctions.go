@@ -5,7 +5,7 @@ import (
 	"oraclehr.api.com/models"
 )
 
-func ConfirmRegionInsert(db *sql.DB, query string) bool {
+func ConfirmRegion(db *sql.DB, query string) bool {
 	var region models.Region
 	row := db.QueryRow(query)
 	err := row.Scan(&region.RegionId, &region.RegionName)

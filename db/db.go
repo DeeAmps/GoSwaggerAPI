@@ -30,7 +30,10 @@ func ExecuteRowQuery(db *sql.DB, query string) *sql.Row {
 }
 
 
-func ExecuteDataManipulationQuery(db *sql.DB, query string) error {
+func ExecuteDataManipulationQuery(db *sql.DB, query string)  {
 	_, err := db.Exec(query)
-	return err
+	if err != nil {
+		panic(err)
+	}
+	return
 }

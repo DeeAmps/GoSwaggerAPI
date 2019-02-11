@@ -21,7 +21,6 @@ func logFatal(err error, db *sql.DB, rows *sql.Rows){
 			rows.Close()
 		}
 		db.Close()
-		//panic(err)
 	}
 	return
 }
@@ -82,10 +81,10 @@ func (rc RegionController) AddNewRegion(dbStr string, insQuery string, lastIdQue
 			json.NewEncoder(writer).Encode(response)
 		} else {
 			fquery := fmt.Sprintf(insQuery, newId, region.RegionName)
-			_ := dbDriver.ExecuteDataManipulationQuery(db, fquery)
+			dbDriver.ExecuteDataManipulationQuery(db, fquery)
 		}
 
-		validate := helpers.ConfirmRegionInsert(db, fmt.Sprintf("SELECT * FROM REGION WHERE REGION_ID = ", newId))
+		validate := helpers.ConfirmRegion(db, fmt.Sprintf("SELECT * FROM REGION WHERE REGION_ID = %d", newId))
 		if validate {
 			var response = models.Response { true, "New Region Created!" }
 			writer.WriteHeader(http.StatusCreated)
@@ -100,14 +99,44 @@ func (rc RegionController) AddNewRegion(dbStr string, insQuery string, lastIdQue
 
 func (rc RegionController) RemoveRegion(dbStr string, query string) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
+		db := dbDriver.DBConnection(dbStr)
+		params := mux.Vars(request)
+		intParams, _ := strconv.ParseInt(params["id"], 10, 0)
 
-
+		fqry := fmt.Sprintf("%s %d", query, intParams)
+		dbDriver.ExecuteDataManipulationQuery(db, fqry)
+		validate := helpers.ConfirmRegion(db, fmt.Sprintf("SELECT * FROM REGION WHERE REGION_ID = %d", intParams))
+		if !validate {
+			var response = models.Response { true, "Region Deleted!" }
+			writer.WriteHeader(http.StatusNotFound)
+			json.NewEncoder(writer).Encode(response)
+		}else{
+			var response = models.Response { false, "Error Creating Region!" }
+			writer.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(writer).Encode(response)
+		}
 	}
 }
 
 func (rc RegionController) UpdateRegion(dbStr string, query string) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-
+		db := dbDriver.DBConnection(dbStr)
+		params := mux.Vars(request)
+		intParams, _ := strconv.ParseInt(params["id"], 10, 0)
+		validate := helpers.ConfirmRegion(db, fmt.Sprintf("SELECT * FROM REGION WHERE REGION_ID = %d", intParams))
+		if validate {
+			var region models.Region
+			json.NewDecoder(request.Body).Decode(&region)
+			fqry := fmt.Sprintf(query, region.RegionName, intParams)
+			dbDriver.ExecuteDataManipulationQuery(db, fqry)
+			var response = models.Response { true, "New Region Created!" }
+			writer.WriteHeader(http.StatusOK)
+			json.NewEncoder(writer).Encode(response)
+		}else{
+			var response = models.Response { false, "Region with Id does not exist!" }
+			writer.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(writer).Encode(response)
+		}
 
 	}
 }
