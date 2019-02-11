@@ -28,7 +28,7 @@ func main(){
 
 	url := fmt.Sprintf("%s:%d", host, port)
 	fmt.Printf("API running on %s/api\n", url)
-	fmt.Printf("Swagger Documentation running on %s/api-docs", url)
+	fmt.Printf("Swagger Documentation running on %s/api-docs\n", url)
 	dbqueries := getQueries()
 	router := mux.NewRouter()
 
@@ -42,21 +42,28 @@ func main(){
 
 	router.HandleFunc("/api/regions/getAllRegions", regionController.GetAllRegions(dbStr, dbqueries["GETALLREGIONS"])).Methods("GET")
 	router.HandleFunc("/api/regions/getSingleRegion/{id}", regionController.GetSingleRegion(dbStr, dbqueries["GETSINGLEREGION"])).Methods("GET")
+	router.HandleFunc("/api/regions/addNewRegion", regionController.AddNewRegion(dbStr, dbqueries["INSERT_NEW_REGION"], dbqueries["GET_LAST_REGION_ID"])).Methods("POST")
+	router.HandleFunc("/api/regions/removeRegion", regionController.RemoveRegion(dbStr, dbqueries["REMOVE_REGION"])).Methods("DELETE")
+	router.HandleFunc("/api/regions/updateRegion/{id}", regionController.UpdateRegion(dbStr, dbqueries["UPDATE_REGION"])).Methods("PUT")
 
-	router.HandleFunc("/api/countries/getAllCountries", countryController.GetAllCountries(dbStr, dbqueries[""])).Methods("GET")
-	router.HandleFunc("/api/countries/getSingleCountry/{id}", countryController.GetSingleCountry(dbStr, dbqueries[""])).Methods("GET")
 
-	router.HandleFunc("/api/departments/getAllDepartments", departmentController.GetAllDepartments(dbStr, dbqueries[""])).Methods("GET")
-	router.HandleFunc("/api/departments/getSingleDepartment/{id}", departmentController.GetSingleDepartment(dbStr, dbqueries[""])).Methods("GET")
 
-	router.HandleFunc("/api/employees/getAllEmployees", employeeController.GetAllEmployees(dbStr, dbqueries[""])).Methods("GET")
-	router.HandleFunc("/api/employees/getSingleEmployee/{id}", employeeController.GetSingleEmployee(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/countries/getAllCountries", countryController.GetAllCountries(dbStr, dbqueries["GET_COUNTRIES"])).Methods("GET")
+	router.HandleFunc("/api/countries/getSingleCountry/{id}", countryController.GetSingleCountry(dbStr, dbqueries["GET_COUNTRY"])).Methods("GET")
 
-	router.HandleFunc("/api/jobs/getAllJobs", jobController.GetAllJobs(dbStr, dbqueries[""])).Methods("GET")
-	router.HandleFunc("/api/jobs/getSingleJob/{id}", jobController.GetSingleJob(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/departments/getAllDepartments", departmentController.GetAllDepartments(dbStr, dbqueries["GET_DEPARTMENTS"])).Methods("GET")
+	router.HandleFunc("/api/departments/getSingleDepartment/{id}", departmentController.GetSingleDepartment(dbStr, dbqueries["GET_DEPARTMENT"])).Methods("GET")
 
-	router.HandleFunc("/api/locations/getAllLocations", locationController.GetAllLocations(dbStr, dbqueries[""])).Methods("GET")
+	router.HandleFunc("/api/employees/getAllEmployees", employeeController.GetAllEmployees(dbStr, dbqueries["GET_EMPLOYEES"])).Methods("GET")
+	router.HandleFunc("/api/employees/getSingleEmployee/{id}", employeeController.GetSingleEmployee(dbStr, dbqueries["GET_EMPLOYEE"])).Methods("GET")
+
+	router.HandleFunc("/api/jobs/getAllJobs", jobController.GetAllJobs(dbStr, dbqueries["GET_JOBS"])).Methods("GET")
+	router.HandleFunc("/api/jobs/getSingleJob/{id}", jobController.GetSingleJob(dbStr, dbqueries["GET_JOB"])).Methods("GET")
+
+	router.HandleFunc("/api/locations/getAllLocations", locationController.GetAllLocations(dbStr, dbqueries["GET_LOCATIONS"])).Methods("GET")
 	router.HandleFunc("/api/locations/getSingleLocation/{id}", locationController.GetSingleLocation(dbStr, dbqueries[""])).Methods("GET")
+
+
 
 	sh := http.StripPrefix("/api-docs/", http.FileServer(http.Dir("../swagger/")))
 	router.PathPrefix("/api-docs/").Handler(sh)

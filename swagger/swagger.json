@@ -194,6 +194,32 @@
                 }
             }
         },
+      "/jobs/getSingleJob/{jobId}" : {
+        "get" : {
+          "tags": [
+            "Jobs"
+          ],
+          "description" : "Get a Single Job from Oracle HR Database",
+          "summary" : "Get Single Job",
+          "parameters" : [
+            {
+              "name" : "jobId",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description" : "Job Id"
+            }
+          ],
+          "responses" : {
+            "400" : {
+              "description" : "Bad Request. No Job with Id found"
+            },
+            "200" : {
+              "description" : "Success"
+            }
+          }
+        }
+      },
         "/locations/getAllLocations" : {
             "get" : {
                 "tags": [
@@ -310,7 +336,7 @@
                 }
             }
         },
-        "/regions/addRegion" : {
+        "/regions/addNewRegion" : {
             "post" : {
                 "tags": [
                     "Regions"

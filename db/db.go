@@ -28,3 +28,9 @@ func ExecuteRowQuery(db *sql.DB, query string) *sql.Row {
 	row := db.QueryRow(query)
 	return row
 }
+
+
+func ExecuteDataManipulationQuery(db *sql.DB, query string) error {
+	_, err := db.Exec(query)
+	return err
+}
