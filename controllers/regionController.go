@@ -38,6 +38,7 @@ func (rc RegionController) GetAllRegions(dbStr string, query string) http.Handle
 		}
 		defer rows.Close()
 		defer db.Close()
+		writer.WriteHeader(http.StatusOK)
 		json.NewEncoder(writer).Encode(regions)
 	}
 }
@@ -48,13 +49,20 @@ func (rc RegionController) GetSingleRegion(dbStr string, query string) http.Hand
 		params := mux.Vars(request)
 		var region models.Region
 		intParams, _ := strconv.ParseInt(params["id"], 10, 0)
-		row := dbDriver.ExecuteRowQuery(db, query, intParams)
-		fmt.Println(row)
-		err := row.Scan(&region.RegionId, &region.RegionName)
-		logFatal(err, db,nil)
-		defer db.Close()
-		json.NewEncoder(writer).Encode(region)
 
+		fqry := fmt.Sprintf("%s %d", query, intParams)
+		row := dbDriver.ExecuteRowQuery(db, fqry)
+		err := row.Scan(&region.RegionId, &region.RegionName)
+		if err == sql.ErrNoRows {
+			var response = models.Response { false, "No results" }
+			writer.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(writer).Encode(response)
+		} else {
+			logFatal(err, db, nil)
+			defer db.Close()
+			writer.WriteHeader(http.StatusOK)
+			json.NewEncoder(writer).Encode(region)
+		}
 	}
 }
 

@@ -34,7 +34,7 @@ func main(){
 	employeeController := controllers.EmployeeController{}
 	jobController := controllers.JobController{}
 	locationController := controllers.LocationController{}
-	
+
 
 	router.HandleFunc("/api/regions/getAllRegions", regionController.GetAllRegions(dbStr, dbqueries["GETALLREGIONS"])).Methods("GET")
 	router.HandleFunc("/api/regions/getSingleRegion/{id}", regionController.GetSingleRegion(dbStr, dbqueries["GETSINGLEREGION"])).Methods("GET")
