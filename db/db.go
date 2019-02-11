@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	_ "gopkg.in/goracle.v2"
-	"context"
 )
 
 func DBConnection(connectionString string) *sql.DB {
@@ -26,7 +25,6 @@ func ExecuteRowsQuery(db *sql.DB, query string) *sql.Rows {
 }
 
 func ExecuteRowQuery(db *sql.DB, query string) *sql.Row {
-	var ctx = context.Background()
-	row := db.QueryRowContext(ctx, query)
+	row := db.QueryRow(query)
 	return row
 }
