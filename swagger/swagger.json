@@ -1,0 +1,347 @@
+{
+    "swagger": "2.0",
+    "basePath": "/api",
+    "host" : "localhost:8000",
+    "tags" : [
+        {
+            "name" : "Employees",
+            "description" : "API endpoint for Oracle HR Database - Employees Table"
+        },
+        {
+            "name" : "Departments",
+            "description" : "API endpoint for Oracle HR Database - Departments Table"
+        },
+        {
+            "name" : "Jobs",
+            "description" : "API endpoint for Oracle HR Database - Jobs Table"
+        },
+        {
+            "name" : "Locations",
+            "description" : "API endpoint for Oracle HR Database - Locations Table"
+        },
+        {
+            "name" : "Regions",
+            "description" : "API endpoint for Oracle HR Database - Regions Table"
+        },
+        {
+            "name" : "Countries",
+            "description" : "API endpoint for Oracle HR Database - Countries Table"
+        }
+    ],
+    "definitions": {
+        "Region" : {
+            "required" : ["RegionName"],
+            "properties" : {
+                "regionId" : {
+                    "type" : "integer"
+                },
+                "regionName" : {
+                    "type" : "string"
+                }
+            }
+        }
+    },
+    "consumes" : [
+        "application/json"
+    ],
+    "schemes" : [
+        "http"
+    ],
+    "produces" : [
+        "application/json"
+    ],
+    "info": {
+        "title": "Golang API",
+        "version" : "1.0.0",
+        "description" : "Golang API with Swagger Documentation for Oracle HR database",
+        "contact": {
+            "name": "Daniel Bennin",
+            "email": "danyelamps.db@gmail.com"
+          }
+    },
+    "paths": {
+        "/employees/getAllEmployees" : {
+            "get" : {
+                "tags": [
+                    "Employees"
+                  ],
+                "description" : "Get all Employees from Oracle HR Database",
+                "summary" : "Get Employees",
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    }
+                }
+            }
+        },
+        "/employees/getSingleEmployee/{employeeId}" : {
+            "get" : {
+                "tags": [
+                    "Employees"
+                  ],
+                "description" : "Get a single Employee from Oracle HR Database",
+                "summary" : "Get one Employee",
+                "parameters" : [
+                    {
+                        "name" : "employeeId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description" : "Employee Id"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    },
+                    "404" : {
+                        "description" : "Employee with Id Not Found"
+                    }
+                }
+            }
+        },
+        "/countries/getAllCountries" : {
+            "get" : {
+                "tags": [
+                    "Countries"
+                  ],
+                "description" : "Get all Countries from Oracle HR Database",
+                "summary" : "Get Countries",
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    }
+                }
+            }
+        },
+        "/countries/getSingleCountry/{countryId}" : {
+            "get" : {
+                "tags": [
+                    "Countries"
+                  ],
+                "description" : "Get a single Country from Oracle HR Database",
+                "summary" : "Get one Countries",
+                "parameters" : [
+                    {
+                        "name" : "countryId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description" : "Country Id"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    },
+                    "400" : {
+                        "description" : "Bad Request. Country with Id Not Found"
+                    }
+                }
+            }
+        },
+        "/departments/getAllDepartments" : {
+            "get" : {
+                "tags": [
+                    "Departments"
+                  ],
+                "description" : "Get all Departments from Oracle HR Database",
+                "summary" : "Get Departments",
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    }
+                }
+            }
+        },
+        "/departments/getSingleDepartment/{departmentId}" : {
+            "get" : {
+                "tags": [
+                    "Departments"
+                  ],
+                "description" : "Get a single Department from Oracle HR Database",
+                "summary" : "Get one Department",
+                "parameters" : [
+                    {
+                        "name" : "departmentId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description" : "Department Id"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    },
+                    "400" : {
+                        "description" : "Bad Request. Department with Id Not Found"
+                    }
+                }
+            }
+        },
+        "/jobs/getAllJobs" : {
+            "get" : {
+                "tags": [
+                    "Jobs"
+                  ],
+                "description" : "Get all Jobs from Oracle HR Database",
+                "summary" : "Get Jobs",
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    }
+                }
+            }
+        },
+        "/locations/getAllLocations" : {
+            "get" : {
+                "tags": [
+                    "Locations"
+                  ],
+                "description" : "Get all Locations from Oracle HR Database",
+                "summary" : "Get Locations",
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    }
+                }
+            }
+        },
+        "/regions/getAllRegions" : {
+            "get" : {
+                "tags": [
+                    "Regions"
+                  ],
+                "description" : "Get all Regions from Oracle HR Database",
+                "summary" : "Get Regions",
+                "responses" : {
+                    "200" : {
+                        "description" : "Success"
+                    }
+                }
+            }
+        },
+        "/regions/updateRegion/{regionId}" : {
+            "put" : {
+                "tags": [
+                    "Regions"
+                  ],
+                "description" : "Update a Region from Oracle HR Database",
+                "summary" : "Update Region",
+                "parameters" : [
+                    {
+                        "name" : "regionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description" : "Region Id"
+                    },
+                    {
+                        "name" : "regionName",
+                        "in": "body",
+                        "required": true,
+                        "type": "string",
+                        "description" : "Region Name",
+                        "schema" : {
+                            "$ref" : "#definitions/Region"
+                        }
+                    }
+                ],
+                "responses" : {
+                    "400" : {
+                        "description" : "Update Failed."
+                    },
+                    "200" : {
+                        "description" : "Update Successful"
+                    }
+                }
+            }
+        },
+        "/regions/removeRegion/{regionId}" : {
+            "delete" : {
+                "tags": [
+                    "Regions"
+                  ],
+                "description" : "Remove a Region from Oracle HR Database",
+                "summary" : "Delete Region",
+                "parameters" : [
+                    {
+                        "name" : "regionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description" : "Region Id"
+                    }
+                ],
+                "responses" : {
+                    "400" : {
+                        "description" : "Delete Failed."
+                    },
+                    "404" : {
+                        "description" : "Delete Successful"
+                    }
+                }
+            }
+        },
+        "/regions/getSingleRegion/{regionId}" : {
+            "get" : {
+                "tags": [
+                    "Regions"
+                ],
+                "description" : "Get a Single Region from Oracle HR Database",
+                "summary" : "Get Single Region",
+                "parameters" : [
+                    {
+                        "name" : "regionId",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "description" : "Region Id"
+                    }
+                ],
+                "responses" : {
+                    "400" : {
+                        "description" : "Bad Request. No Region with Id found"
+                    },
+                    "200" : {
+                        "description" : "Success"
+                    }
+                }
+            }
+        },
+        "/regions/addRegion" : {
+            "post" : {
+                "tags": [
+                    "Regions"
+                  ],
+                "description" : "Add a new Region to Oracle HR Database",
+                "summary" : "Add new Region",
+                "parameters" : [
+                    {
+                        "name" : "regionName",
+                        "in": "body",
+                        "required": true,
+                        "type": "string",
+                        "description" : "Department Id",
+                        "schema" : {
+                            "$ref" : "#definitions/Region"
+                        }
+                    }
+                ],
+                "responses" : {
+                    "201" : {
+                        "description" : "Created"
+                    },
+                    "400" : {
+                        "description" : "Bad Request"
+                    },
+                    "500" : {
+                        "description" : "Insert Unsuccessful"
+                    }
+                }
+            }
+        }
+    }
+    
+}

@@ -1,5 +1,7 @@
 package main
 
+// author Daniel Bennin @danyelamps.db@gmail.com
+
 import (
 	"github.com/micro/go-config"
 	"github.com/gorilla/mux"
@@ -25,6 +27,8 @@ func main(){
 	port := config.Get("port").Int(3000)
 
 	url := fmt.Sprintf("%s:%d", host, port)
+	fmt.Printf("API running on %s/api\n", url)
+	fmt.Printf("Swagger Documentation running on %s/api-docs", url)
 	dbqueries := getQueries()
 	router := mux.NewRouter()
 
@@ -54,7 +58,12 @@ func main(){
 	router.HandleFunc("/api/locations/getAllLocations", locationController.GetAllLocations(dbStr, dbqueries[""])).Methods("GET")
 	router.HandleFunc("/api/locations/getSingleLocation/{id}", locationController.GetSingleLocation(dbStr, dbqueries[""])).Methods("GET")
 
+	sh := http.StripPrefix("/api-docs/", http.FileServer(http.Dir("../swagger/")))
+	router.PathPrefix("/api-docs/").Handler(sh)
+	router.PathPrefix("/api-docs").Handler(sh)
 	log.Fatal(http.ListenAndServe(url, router))
+
+
 
 }
 
