@@ -40,6 +40,17 @@ func main(){
 	locationController := controllers.LocationController{}
 
 
+
+	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte("API Swagger Documentation running on 0.0.0.0:8000/api-docs"))
+	})
+	router.HandleFunc("/api", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte("API Swagger Documentation running on 0.0.0.0:8000/api-docs"))
+	})
+	router.HandleFunc("/api/", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte("API Swagger Documentation running on 0.0.0.0:8000/api-docs"))
+	})
+
 	router.HandleFunc("/api/regions/getAllRegions", regionController.GetAllRegions(dbStr, dbqueries["GETALLREGIONS"])).Methods("GET")
 	router.HandleFunc("/api/regions/getSingleRegion/{id}", regionController.GetSingleRegion(dbStr, dbqueries["GETSINGLEREGION"])).Methods("GET")
 	router.HandleFunc("/api/regions/addNewRegion", regionController.AddNewRegion(dbStr, dbqueries["INSERT_NEW_REGION"], dbqueries["GET_LAST_REGION_ID"])).Methods("POST")
@@ -62,8 +73,6 @@ func main(){
 
 	router.HandleFunc("/api/locations/getAllLocations", locationController.GetAllLocations(dbStr, dbqueries["GET_LOCATIONS"])).Methods("GET")
 	router.HandleFunc("/api/locations/getSingleLocation/{id}", locationController.GetSingleLocation(dbStr, dbqueries[""])).Methods("GET")
-
-
 
 	sh := http.StripPrefix("/api-docs/", http.FileServer(http.Dir("../swagger/")))
 	router.PathPrefix("/api-docs/").Handler(sh)
